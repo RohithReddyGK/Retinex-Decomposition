@@ -6,7 +6,7 @@
 ![Flask](https://img.shields.io/badge/Flask-2.3.3-lightgrey)
 ![Render](https://img.shields.io/badge/Deployment-Render-blue)
 ![Vercel](https://img.shields.io/badge/Frontend-Vercel-blue)
-![Live](https://illumination-retinex-decomposition.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://illumination-retinex-decomposition.vercel.app/)
 
 ---
 
