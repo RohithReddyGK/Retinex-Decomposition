@@ -2,7 +2,7 @@ import { useState } from "react";
 import ImageUpload from "./components/ImageUpload";
 import ImageDisplay from "./components/ImageDisplay";
 
-const BASE_URL=import.meta.env.VITE_BACKEND_URL || "http://127.0.0.1:5000"
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://127.0.0.1:5000"
 
 export default function App() {
   const [processing, setProcessing] = useState(false);
@@ -11,7 +11,7 @@ export default function App() {
 
   const handleUpload = (selectedFile) => {
     setFile(selectedFile);
-    setResults(null); 
+    setResults(null);
   };
 
   const handleProcess = async () => {
@@ -41,23 +41,35 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 font-sans">
-      <h1 className="text-4xl font-bold text-center mb-4 text-blue-700">
-        Illumination Correction using Retinex-Based Decomposition
-      </h1>
-      <p className="text-center text-lg text-gray-700 mb-8">
-        Upload a grayscale or color image with uneven illumination to recover its texture and illumination map. 
-        This tool uses Retinex-inspired log-domain decomposition to separate reflectance (texture) and illumination.
-      </p>
-
-      <ImageUpload 
-        file={file} 
-        onUpload={handleUpload} 
-        onProcess={handleProcess} 
-        processing={processing} 
+    <div className="relative min-h-screen w-full">
+      <img
+        src="/Background Image.png"
+        alt="background"
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {results && <ImageDisplay results={results} />}
+      <div className="absolute inset-0 bg-black/30"></div>
+
+      <div className="relative z-10 min-h-screen p-6 font-sans flex flex-col items-center justify-center text-center">
+        <h1 className="text-4xl font-bold mb-4 text-white">
+          Illumination Correction using Retinex-Based Decomposition
+        </h1>
+        <p className="text-lg text-white/90 mb-8 max-w-5xl">
+          Upload a grayscale or color image with uneven illumination to recover its texture and illumination map.
+          This tool uses Retinex-inspired log-domain decomposition to separate reflectance (texture) and illumination.
+        </p>
+
+        <div className="flex flex-col items-center">
+          <ImageUpload
+            file={file}
+            onUpload={handleUpload}
+            onProcess={handleProcess}
+            processing={processing}
+          />
+
+          {results && <ImageDisplay results={results} />}
+        </div>
+      </div>
     </div>
   );
 }
