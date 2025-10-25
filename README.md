@@ -12,8 +12,7 @@
 
 ## Table of Contents
 - [Project Overview](#project-overview)
-- [Problem Statement](#problem-statement)
-- [Mathematical Model](#mathematical-model)
+- [Algorithm Used](#algorithm-used)
 - [Features](#features)
 - [Demo](#demo)
 - [Tech Stack](#tech-stack)
@@ -24,6 +23,7 @@
 ---
 
 ## Project Overview
+
 This project performs **Illumination Correction** for images of textured surfaces under uneven lighting using a **Retinex-based log-domain decomposition**. It separates the observed image into:
 
 - **Reflectance (R̂)**: The true surface texture.
@@ -32,35 +32,30 @@ This project performs **Illumination Correction** for images of textured surface
 It works for both **grayscale and color images**, preserving color ratios in color images.
 
 ---
+## Algorithm Used
 
-## Problem Statement
-Given an image \(I(x,y)\) with uneven illumination, recover:
+**Step 1:** Convert image to floating-point RGB or grayscale
+All pixel values are scaled to [0,1] for numerical stability.
 
-\[
-I(x,y) = R(x,y) \cdot L(x,y)
-\]
+**Step 2:** Why histogram equalization alone cannot recover R(x,y)
+Histogram equalization redistributes pixel intensities globally. It may enhance contrast but cannot separate the lighting component from the texture. Shadows and bright spots remain entangled with the true surface texture.In simple word: It says-“Let me stretch and balance the brightness levels".But it doesn’t know: which parts are bright because of light, and which parts are bright because of surface reflectance. So, it blindly brightens or darkens everything, often ruining textures instead of fixing illumination.
 
-where \(R(x,y)\) is the true reflectance (texture) and \(L(x,y)\) is the smooth illumination. Histogram equalization cannot achieve this separation, as it only redistributes global intensities.
+**Step 3:** Log-domain decomposition
+I(x,y) = R(x,y) * L(x,y) → logI = logR + logL. This linearizes the multiplicative relation into an additive one.
 
----
+**Step 4:** Estimate illumination L(x,y)
+Apply a large-kernel box filter via integral image on logI to compute logL, producing a smooth illumination map while ignoring high-frequency textures.
 
-## Mathematical Model
+**Step 5:** Recover reflectance R(x,y)
+Subtract logL from logI and exponentiate to get R̂. For color images, the same luminance logL is subtracted from each channel.
 
-Take logarithm to linearize the multiplicative model:
+**Step 6:** Output results
+Provide the original image, illumination map, and recovered reflectance, all encoded in base64 for frontend display.
 
-\[
-\log I(x,y) = \log R(x,y) + \log L(x,y) 
-\quad \Rightarrow \quad 
-\hat{R}(x,y) = \exp(\log I - \log L)
-\]
-
-For color images, illumination is estimated from luminance:
-
-\[
-Y = 0.2989 \cdot R + 0.5870 \cdot G + 0.1140 \cdot B
-\]
-
-\(\hat{R}\) per channel is recovered using the same illumination map to preserve color ratios.
+### Mathematical summary:
+log I(x,y) = log R(x,y) + log L(x,y)
+L(x,y) ≈ box_filter(log I(x,y))
+R̂(x,y) = exp(log I - log L)
 
 ---
 
@@ -120,6 +115,7 @@ npm run dev
 ---
 
 ### Usage
+
 - Open the frontend in browser (localhost:5173 or deployed URL).
 - Upload an image (grayscale or color) under uneven illumination.
 - Click **Process Image**.
@@ -127,9 +123,9 @@ npm run dev
 
 ---
 
-### Deployment
+## Deployment
 
-## Backend
+### Backend
 ```bash
 Install Gunicorn: pip install gunicorn
 Add to requirements.txt
@@ -138,7 +134,7 @@ Start command in Render:
 gunicorn app:app --bind 0.0.0.0$PORT
 ```
 
-## Frontend
+### Frontend
 ```bash
 Set VITE_BACKEND_URL in Vercel environment variables.
 Deploy using npm run build or Vercel’s automatic deployment.
