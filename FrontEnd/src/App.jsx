@@ -2,6 +2,8 @@ import { useState } from "react";
 import ImageUpload from "./components/ImageUpload";
 import ImageDisplay from "./components/ImageDisplay";
 
+const BASE_URL=import.meta.env.VITE_BACKEND_URL || "http://127.0.0.1:5000"
+
 export default function App() {
   const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState(null);
@@ -24,7 +26,7 @@ export default function App() {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:5000/process", {
+      const res = await fetch(`${BASE_URL}/process`, {
         method: "POST",
         body: formData
       });
