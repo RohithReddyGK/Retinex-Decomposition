@@ -158,4 +158,4 @@ After successful processing:
 
 ---
 
-### 🌟 **If you like my portfolio, give it a ⭐ **
+### 🌟 **If you like this project, give it a ⭐ **
