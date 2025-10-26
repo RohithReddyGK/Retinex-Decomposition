@@ -71,7 +71,7 @@ R̂(x,y) = exp(log I - log L)
 ---
 
 ## Demo
-You can try the deployed frontend [here](https://illumination-retinex-decomposition.vercel.app/) and backend [here](https://retinex-decomposition.onrender.com/).
+You can check the deployed frontend [here](https://illumination-retinex-decomposition.vercel.app/) and backend [here](https://retinex-decomposition.onrender.com/).
 
 ---
 
