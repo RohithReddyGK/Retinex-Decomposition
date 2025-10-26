@@ -142,6 +142,14 @@ Deploy using npm run build or Vercel’s automatic deployment.
 
 ---
 
+## 🧾 PDF & Colab Integration
+
+After successful processing:
+- Click “**Download PDF Report**” to export a detailed summary
+- Click “**Run in Google Colab**” to explore the notebook interactively
+
+---
+
 ## 🙋‍♂️ Author
 
 **Rohith Reddy.G.K**  
